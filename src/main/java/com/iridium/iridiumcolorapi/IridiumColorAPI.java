@@ -54,6 +54,7 @@ public class IridiumColorAPI {
      * @param start The starting color.
      * @param end   The ending color.
      * @param step  How many colors we return.
+     * @author TheViperShow
      * @since 1.0.0
      */
     @Nonnull
