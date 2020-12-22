@@ -14,8 +14,7 @@
     <version>1.0.0</version>
 </dependency>
 ```
-
-#Usage
+# Usage
 To add a gradient simply use the <GRADIENT> tags
 ```java
 IridiumColorAPI.process("<GRADIENT:2C08BA>Cool string with a gradient</GRADIENT:028A97>");
