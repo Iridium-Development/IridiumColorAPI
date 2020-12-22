@@ -7,6 +7,8 @@ import org.bukkit.Bukkit;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class IridiumColorAPI {
     /**
@@ -49,12 +51,40 @@ public class IridiumColorAPI {
     }};
 
     /**
+     * Processes a string to add color to it.
+     *
+     * @param string The string we want to process
+     * @since 1.0.0
+     */
+    @Nonnull
+    public static String process(@Nonnull String string) {
+        string = ChatColor.translateAlternateColorCodes('&', string);
+        Pattern gradiant = Pattern.compile("(<GRADIANT:(([0-9]|[A-F]){6})>)(.*){1}(<\\/GRADIANT:(([0-9]|[A-F]){6})>)");
+        Matcher gradiantmatcher = gradiant.matcher(string);
+        if (gradiantmatcher.find()) {
+            String start = gradiantmatcher.group(2);
+            String end = gradiantmatcher.group(6);
+            String content = gradiantmatcher.group(4);
+            string = string.replace(gradiantmatcher.group(), color(content, new Color(Integer.parseInt(start, 16)), new Color(Integer.parseInt(end, 16))));
+        }
+        Pattern solid = Pattern.compile("(<SOLID:(([0-9]|[A-F]){6})>)");
+        Matcher solidmatcher = solid.matcher(string);
+        if (solidmatcher.find()) {
+            String color = solidmatcher.group(2);
+            string = string.replace(solidmatcher.group(), getColor(color) + "");
+        }
+
+        return string;
+    }
+
+    /**
      * Colors a String
      *
      * @param string The string we want to color
      * @param color  The color we want to set it to
      * @since 1.0.0
      */
+    @Nonnull
     public static String color(@Nonnull String string, @Nonnull Color color) {
         return (SUPPORTSRGB ? ChatColor.of(color) : getClosestColor(color)) + string;
     }
@@ -64,9 +94,10 @@ public class IridiumColorAPI {
      *
      * @param string The string we want to color
      * @param start  The starting gradiant
-     * @paran end  The ending gradiant
+     * @param end    The ending gradiant
      * @since 1.0.0
      */
+    @Nonnull
     public static String color(@Nonnull String string, @Nonnull Color start, @Nonnull Color end) {
         StringBuilder stringBuilder = new StringBuilder();
         ChatColor[] colors = createGradient(start, end, string.length());
@@ -75,6 +106,17 @@ public class IridiumColorAPI {
             stringBuilder.append(colors[i]).append(characters[i]);
         }
         return stringBuilder.toString();
+    }
+
+    /**
+     * Get a color from hex code
+     *
+     * @param string The hex code of the color
+     * @since 1.0.0
+     */
+    @Nonnull
+    private static ChatColor getColor(@Nonnull String string) {
+        return SUPPORTSRGB ? ChatColor.of(new Color(Integer.parseInt(string, 16))) : getClosestColor(new Color(Integer.parseInt(string, 16)));
     }
 
     /**
