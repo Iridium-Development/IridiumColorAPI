@@ -52,6 +52,7 @@ public class IridiumColorAPI {
 
     /**
      * Processes a string to add color to it.
+     * Thanks to Distressing for helping  with the regex <3
      *
      * @param string The string we want to process
      * @since 1.0.0
@@ -59,17 +60,17 @@ public class IridiumColorAPI {
     @Nonnull
     public static String process(@Nonnull String string) {
         string = ChatColor.translateAlternateColorCodes('&', string);
-        Pattern gradiant = Pattern.compile("(<GRADIANT:(([0-9]|[A-F]|[a-f]){6})>)(.*){1}(<\\/GRADIANT:(([0-9]|[A-F]|[a-f]){6})>)");
+        Pattern gradiant = Pattern.compile("((<GRADIANT:(([0-9]|[A-F]|[a-f]){6})>)((.*?)(<\\/GRADIANT:(([0-9]|[A-F]|[a-f]){6})>)))+");
         Matcher gradiantmatcher = gradiant.matcher(string);
-        if (gradiantmatcher.find()) {
-            String start = gradiantmatcher.group(2);
-            String end = gradiantmatcher.group(6);
-            String content = gradiantmatcher.group(4);
+        while (gradiantmatcher.find()) {
+            String start = gradiantmatcher.group(3);
+            String end = gradiantmatcher.group(8);
+            String content = gradiantmatcher.group(6);
             string = string.replace(gradiantmatcher.group(), color(content, new Color(Integer.parseInt(start, 16)), new Color(Integer.parseInt(end, 16))));
         }
         Pattern solid = Pattern.compile("(<SOLID:(([0-9]|[A-F]|[a-f]){6})>)");
         Matcher solidmatcher = solid.matcher(string);
-        if (solidmatcher.find()) {
+        while (solidmatcher.find()) {
             String color = solidmatcher.group(2);
             string = string.replace(solidmatcher.group(), getColor(color) + "");
         }
