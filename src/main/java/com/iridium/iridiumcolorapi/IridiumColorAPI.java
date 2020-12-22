@@ -57,10 +57,11 @@ public class IridiumColorAPI {
      * @param string The string we want to process
      * @since 1.0.0
      */
+
     @Nonnull
     public static String process(@Nonnull String string) {
         string = ChatColor.translateAlternateColorCodes('&', string);
-        Pattern gradiant = Pattern.compile("((<GRADIANT:(([0-9]|[A-F]|[a-f]){6})>)((.*?)(<\\/GRADIANT:(([0-9]|[A-F]|[a-f]){6})>)))+");
+        Pattern gradiant = Pattern.compile("((<GRADIENT:(([0-9]|[A-F]|[a-f]){6})>)((.*?)(<\\/GRADIENT:(([0-9]|[A-F]|[a-f]){6})>)))+");
         Matcher gradiantmatcher = gradiant.matcher(string);
         while (gradiantmatcher.find()) {
             String start = gradiantmatcher.group(3);
