@@ -166,7 +166,7 @@ public class IridiumColorAPI {
         double nearestDistance = Integer.MAX_VALUE;
 
         for (Color constantColor : colors.keySet()) {
-            double distance = Math.sqrt(Math.pow(color.getRed() - constantColor.getRed(), 2) - Math.pow(color.getGreen() - constantColor.getGreen(), 2) - Math.pow(color.getBlue() - constantColor.getBlue(), 2));
+            double distance = Math.pow(color.getRed() - constantColor.getRed(), 2) + Math.pow(color.getGreen() - constantColor.getGreen(), 2) + Math.pow(color.getBlue() - constantColor.getBlue(), 2);
             if (nearestDistance > distance) {
                 nearestColor = constantColor;
                 nearestDistance = distance;
