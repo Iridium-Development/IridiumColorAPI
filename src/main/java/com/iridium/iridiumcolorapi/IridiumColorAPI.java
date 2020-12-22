@@ -89,11 +89,13 @@ public class IridiumColorAPI {
     @Nonnull
     private static ChatColor getClosestColor(Color color) {
         Color nearestColor = null;
-        int nearestDistance = Integer.MAX_VALUE;
+        double nearestDistance = Integer.MAX_VALUE;
 
         for (Color constantColor : colors.keySet()) {
-            if (nearestDistance > Math.sqrt(Math.pow(color.getRed() - constantColor.getRed(), 2) - Math.pow(color.getGreen() - constantColor.getGreen(), 2) - Math.pow(color.getBlue() - constantColor.getBlue(), 2))) {
+            double distance = Math.sqrt(Math.pow(color.getRed() - constantColor.getRed(), 2) - Math.pow(color.getGreen() - constantColor.getGreen(), 2) - Math.pow(color.getBlue() - constantColor.getBlue(), 2));
+            if (nearestDistance > distance) {
                 nearestColor = constantColor;
+                nearestDistance = distance;
             }
         }
         return colors.get(nearestColor);
