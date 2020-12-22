@@ -49,6 +49,35 @@ public class IridiumColorAPI {
     }};
 
     /**
+     * Colors a String
+     *
+     * @param string The string we want to color
+     * @param color  The color we want to set it to
+     * @since 1.0.0
+     */
+    public static String color(@Nonnull String string, @Nonnull Color color) {
+        return (SUPPORTSRGB ? ChatColor.of(color) : getClosestColor(color)) + string;
+    }
+
+    /**
+     * Colors a String with a gradiant
+     *
+     * @param string The string we want to color
+     * @param start  The starting gradiant
+     * @paran end  The ending gradiant
+     * @since 1.0.0
+     */
+    public static String color(@Nonnull String string, @Nonnull Color start, @Nonnull Color end) {
+        StringBuilder stringBuilder = new StringBuilder();
+        ChatColor[] colors = createGradient(start, end, string.length());
+        String[] characters = string.split("");
+        for (int i = 0; i < string.length(); i++) {
+            stringBuilder.append(colors[i]).append(characters[i]);
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
      * Returns a gradient array of chat colors.
      *
      * @param start The starting color.
@@ -58,7 +87,7 @@ public class IridiumColorAPI {
      * @since 1.0.0
      */
     @Nonnull
-    public static ChatColor[] createGradient(@Nonnull Color start, @Nonnull Color end, int step) {
+    private static ChatColor[] createGradient(@Nonnull Color start, @Nonnull Color end, int step) {
         ChatColor[] colors = new ChatColor[step];
         int stepR = Math.abs(start.getRed() - end.getRed()) / (step - 1);
         int stepG = Math.abs(start.getGreen() - end.getGreen()) / (step - 1);
