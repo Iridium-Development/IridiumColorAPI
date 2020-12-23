@@ -3,8 +3,7 @@
 ```xml
 <repository>
     <id>savagelabs</id>
-    <url>https://nexus.savagelabs.net</url>
-    <layout>default</layout>
+    <url>https://nexus.savagelabs.net/repository/maven-releases/</url>
 </repository>
 ```
 ```xml
