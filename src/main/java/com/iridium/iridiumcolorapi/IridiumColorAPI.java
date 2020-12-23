@@ -24,7 +24,7 @@ public class IridiumColorAPI {
      *
      * @since 1.0.0
      */
-    private static final boolean SUPPORTSRGB = supports(16);
+    private static final boolean SUPPORTSRGB = VERSION >= 16;
 
     /**
      * Cached result of all legacy colors.
@@ -61,7 +61,7 @@ public class IridiumColorAPI {
     @Nonnull
     public static String process(@Nonnull String string) {
         string = ChatColor.translateAlternateColorCodes('&', string);
-        Pattern gradiant = Pattern.compile("((<GRADIENT:(([0-9]|[A-F]|[a-f]){6})>)((.*?)(<\\/GRADIENT:(([0-9]|[A-F]|[a-f]){6})>)))+");
+        Pattern gradiant = Pattern.compile("((<GRADIENT:(([0-9]|[A-F]|[a-f]){6})>)((.*?)(</GRADIENT:(([0-9]|[A-F]|[a-f]){6})>)))+");
         Matcher gradiantmatcher = gradiant.matcher(string);
         while (gradiantmatcher.find()) {
             String start = gradiantmatcher.group(3);
@@ -176,27 +176,15 @@ public class IridiumColorAPI {
     }
 
     /**
-     * Checks if the specified version is the same version or higher than the current server version.
-     *
-     * @param version the major version to be checked. "1." is ignored. E.g. 1.12 = 12 | 1.9 = 9
-     * @return true of the version is equal or higher than the current version.
-     * @since 1.0.0
-     */
-    public static boolean supports(int version) {
-        return VERSION >= version;
-    }
-
-    /**
      * Gets the exact major version (..., 1.9, 1.10, ..., 1.14)
      * In most cases, you shouldn't be using this method.
      *
      * @param version Supports {@link Bukkit#getVersion()}, {@link Bukkit#getBukkitVersion()} and normal formats such as "1.14"
      * @return the exact major version.
-     * @see #supports(int)
      * @since 1.0.0
      */
     @Nonnull
-    public static String getMajorVersion(@Nonnull String version) {
+    private static String getMajorVersion(@Nonnull String version) {
         Validate.notEmpty(version, "Cannot get major Minecraft version from null or empty string");
 
         // getVersion()
