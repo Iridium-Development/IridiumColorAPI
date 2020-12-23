@@ -61,18 +61,18 @@ public class IridiumColorAPI {
     @Nonnull
     public static String process(@Nonnull String string) {
         string = ChatColor.translateAlternateColorCodes('&', string);
-        Pattern gradiant = Pattern.compile("((<GRADIENT:(([0-9]|[A-F]|[a-f]){6})>)((.*?)(</GRADIENT:(([0-9]|[A-F]|[a-f]){6})>)))+");
+        Pattern gradiant = Pattern.compile("<GRADIENT:([0-9A-Fa-f]{6})>(.*?)</GRADIENT:([0-9A-Fa-f]{6})>");
         Matcher gradiantmatcher = gradiant.matcher(string);
         while (gradiantmatcher.find()) {
-            String start = gradiantmatcher.group(3);
-            String end = gradiantmatcher.group(8);
-            String content = gradiantmatcher.group(6);
+            String start = gradiantmatcher.group(1);
+            String end = gradiantmatcher.group(3);
+            String content = gradiantmatcher.group(2);
             string = string.replace(gradiantmatcher.group(), color(content, new Color(Integer.parseInt(start, 16)), new Color(Integer.parseInt(end, 16))));
         }
-        Pattern solid = Pattern.compile("(<SOLID:(([0-9]|[A-F]|[a-f]){6})>)");
+        Pattern solid = Pattern.compile("<SOLID:([0-9A-Fa-f]{6})>");
         Matcher solidmatcher = solid.matcher(string);
         while (solidmatcher.find()) {
-            String color = solidmatcher.group(2);
+            String color = solidmatcher.group(1);
             string = string.replace(solidmatcher.group(), getColor(color) + "");
         }
 
