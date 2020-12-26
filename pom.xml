@@ -7,6 +7,18 @@
     <groupId>com.iridium</groupId>
     <artifactId>IridiumColorAPI</artifactId>
     <version>1.0.2</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>7</source>
+                    <target>7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <repositories>
         <repository>

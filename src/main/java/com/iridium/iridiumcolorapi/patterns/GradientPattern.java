@@ -4,11 +4,10 @@ import com.iridium.iridiumcolorapi.IridiumColorAPI;
 
 import java.awt.*;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class GradientPattern implements IPattern {
+public class GradientPattern implements Pattern {
 
-    Pattern pattern = Pattern.compile("<GRADIENT:([0-9A-Fa-f]{6})>(.*?)</GRADIENT:([0-9A-Fa-f]{6})>");
+    java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("<GRADIENT:([0-9A-Fa-f]{6})>(.*?)</GRADIENT:([0-9A-Fa-f]{6})>");
 
     public String process(String string) {
         Matcher matcher = pattern.matcher(string);

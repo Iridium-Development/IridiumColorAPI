@@ -1,5 +1,5 @@
 package com.iridium.iridiumcolorapi.patterns;
 
-public interface IPattern {
+public interface Pattern {
     String process(String string);
 }
