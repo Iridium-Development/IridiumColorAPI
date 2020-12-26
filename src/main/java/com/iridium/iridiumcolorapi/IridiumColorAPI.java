@@ -1,14 +1,17 @@
 package com.iridium.iridiumcolorapi;
 
+import com.iridium.iridiumcolorapi.patterns.GradientPattern;
+import com.iridium.iridiumcolorapi.patterns.IPattern;
+import com.iridium.iridiumcolorapi.patterns.SolidPattern;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
 public class IridiumColorAPI {
     /**
@@ -51,6 +54,13 @@ public class IridiumColorAPI {
     }};
 
     /**
+     * Cached result of patterns
+     *
+     * @since 1.0.2
+     */
+    private static final List<IPattern> patterns = Arrays.asList(new GradientPattern(), new SolidPattern());
+
+    /**
      * Processes a string to add color to it.
      * Thanks to Distressing for helping  with the regex <3
      *
@@ -61,21 +71,9 @@ public class IridiumColorAPI {
     @Nonnull
     public static String process(@Nonnull String string) {
         string = ChatColor.translateAlternateColorCodes('&', string);
-        Pattern gradiant = Pattern.compile("<GRADIENT:([0-9A-Fa-f]{6})>(.*?)</GRADIENT:([0-9A-Fa-f]{6})>");
-        Matcher gradiantmatcher = gradiant.matcher(string);
-        while (gradiantmatcher.find()) {
-            String start = gradiantmatcher.group(1);
-            String end = gradiantmatcher.group(3);
-            String content = gradiantmatcher.group(2);
-            string = string.replace(gradiantmatcher.group(), color(content, new Color(Integer.parseInt(start, 16)), new Color(Integer.parseInt(end, 16))));
+        for (IPattern pattern : patterns) {
+            string = pattern.process(string);
         }
-        Pattern solid = Pattern.compile("<SOLID:([0-9A-Fa-f]{6})>");
-        Matcher solidmatcher = solid.matcher(string);
-        while (solidmatcher.find()) {
-            String color = solidmatcher.group(1);
-            string = string.replace(solidmatcher.group(), getColor(color) + "");
-        }
-
         return string;
     }
 
@@ -117,7 +115,7 @@ public class IridiumColorAPI {
      * @since 1.0.0
      */
     @Nonnull
-    private static ChatColor getColor(@Nonnull String string) {
+    public static ChatColor getColor(@Nonnull String string) {
         return SUPPORTSRGB ? ChatColor.of(new Color(Integer.parseInt(string, 16))) : getClosestColor(new Color(Integer.parseInt(string, 16)));
     }
 
