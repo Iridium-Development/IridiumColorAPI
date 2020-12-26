@@ -35,7 +35,7 @@ public class IridiumColorAPI {
      *
      * @since 1.0.0
      */
-    private static final Map<Color, ChatColor> COLORS = new ImmutableMap.Builder<Color, ChatColor>()
+    private static final Map<Color, ChatColor> COLORS = ImmutableMap.<Color, ChatColor>builder()
             .put(new Color(0), ChatColor.getByChar('0'))
             .put(new Color(170), ChatColor.getByChar('1'))
             .put(new Color(43520), ChatColor.getByChar('2'))
