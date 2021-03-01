@@ -3,6 +3,7 @@ package com.iridium.iridiumcolorapi;
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcolorapi.patterns.GradientPattern;
 import com.iridium.iridiumcolorapi.patterns.Pattern;
+import com.iridium.iridiumcolorapi.patterns.RainbowPattern;
 import com.iridium.iridiumcolorapi.patterns.SolidPattern;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.Validate;
@@ -59,7 +60,7 @@ public class IridiumColorAPI {
      *
      * @since 1.0.2
      */
-    private static final List<Pattern> PATTERNS = Arrays.asList(new GradientPattern(), new SolidPattern());
+    private static final List<Pattern> PATTERNS = Arrays.asList(new GradientPattern(), new SolidPattern(), new RainbowPattern());
 
     /**
      * Processes a string to add color to it.
@@ -85,7 +86,8 @@ public class IridiumColorAPI {
      * @return The list of processed strings
      * @since 1.0.3
      */
-    public static List<String> process(List<String> strings) {
+    @Nonnull
+    public static List<String> process(@Nonnull List<String> strings) {
         return strings.stream().map(IridiumColorAPI::process).collect(Collectors.toList());
     }
 
@@ -120,6 +122,17 @@ public class IridiumColorAPI {
         return stringBuilder.toString();
     }
 
+    @Nonnull
+    public static String rainbow(@Nonnull String string, float saturation) {
+        StringBuilder stringBuilder = new StringBuilder();
+        ChatColor[] colors = createRainbow(string.length(), saturation);
+        String[] characters = string.split("");
+        for (int i = 0; i < string.length(); i++) {
+            stringBuilder.append(colors[i]).append(characters[i]);
+        }
+        return stringBuilder.toString();
+    }
+
     /**
      * Get a color from hex code
      *
@@ -129,6 +142,29 @@ public class IridiumColorAPI {
     @Nonnull
     public static ChatColor getColor(@Nonnull String string) {
         return SUPPORTS_RGB ? ChatColor.of(new Color(Integer.parseInt(string, 16))) : getClosestColor(new Color(Integer.parseInt(string, 16)));
+    }
+
+    /**
+     * Returns a rainbow array of chat colors
+     *
+     * @param step How many colors we return
+     * @param saturation The saturation of the rainbow
+     * @return The array of colors
+     * @since 1.0.3
+     */
+    @Nonnull
+    private static ChatColor[] createRainbow(int step, float saturation) {
+        ChatColor[] colors = new ChatColor[step];
+        double colorStep = (1.00 / step);
+        for (int i = 0; i < step; i++) {
+            Color color = Color.getHSBColor((float) (colorStep * i), saturation, saturation);
+            if (SUPPORTS_RGB) {
+                colors[i] = ChatColor.of(color);
+            } else {
+                colors[i] = getClosestColor(color);
+            }
+        }
+        return colors;
     }
 
     /**
