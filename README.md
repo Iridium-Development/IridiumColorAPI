@@ -19,7 +19,18 @@ To add a gradient simply use the <GRADIENT> tags
 IridiumColorAPI.process("<GRADIENT:2C08BA>Cool string with a gradient</GRADIENT:028A97>");
 ```
 ![Gradient Text](https://i.imgur.com/M1l5OM9.png)
-    
+
+The number after the rainbow represents the saturation
+```java
+IridiumColorAPI.process("<RAINBOW1>THIS IS A REALLY COOL Rainbow</RAINBOW>");
+```
+
+![Rainbow](https://i.imgur.com/5GhSFo1.png)
+
+```java
+IridiumColorAPI.process("<RAINBOW100>THIS IS A REALLY COOL Rainbow</RAINBOW>");
+```
+![Rainbow](https://i.imgur.com/Rieftuz.png)
 ```java
 IridiumColorAPI.process("<SOLID:FF0080>Cool RGB SUPPORT");
 ```
