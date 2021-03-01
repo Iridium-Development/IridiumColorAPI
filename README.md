@@ -10,7 +10,7 @@
 <dependency>
     <groupId>com.iridium</groupId>
     <artifactId>IridiumColorAPI</artifactId>
-    <version>1.0.0</version>
+    <version>LATEST</version>
 </dependency>
 ```
 # Usage
