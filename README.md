@@ -21,6 +21,11 @@ IridiumColorAPI.process("<GRADIENT:2C08BA>Cool string with a gradient</GRADIENT:
 ![Gradient Text](https://i.imgur.com/M1l5OM9.png)
     
 ```java
+IridiumColorAPI.process("<RAINBOW1>THIS IS A REALLY COOL Rainbow</RAINBOW>");
+```
+
+![Rainbow](https://i.imgur.com/5GhSFo1.png)
+```java
 IridiumColorAPI.process("<SOLID:FF0080>Cool RGB SUPPORT");
 ```
 ![RGB Text](https://i.imgur.com/IudqIpb.png)
