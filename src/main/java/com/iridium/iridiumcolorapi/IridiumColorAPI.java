@@ -13,6 +13,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class IridiumColorAPI {
     /**
@@ -75,6 +76,17 @@ public class IridiumColorAPI {
             string = pattern.process(string);
         }
         return string;
+    }
+
+    /**
+     * Process multiple strings in a list
+     *
+     * @param strings The list of the strings we are processing
+     * @return The list of processed strings
+     * @since 1.0.3
+     */
+    public static List<String> process(List<String> strings) {
+        return strings.stream().map(IridiumColorAPI::process).collect(Collectors.toList());
     }
 
     /**
