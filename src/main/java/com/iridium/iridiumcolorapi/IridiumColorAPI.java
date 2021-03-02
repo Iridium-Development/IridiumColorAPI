@@ -133,7 +133,7 @@ public class IridiumColorAPI {
     /**
      * Colors a String with rainbow colors.
      *
-     * @param string The string which should have rainbow colors
+     * @param string     The string which should have rainbow colors
      * @param saturation The saturation of the rainbow colors
      * @since 1.0.3
      */
