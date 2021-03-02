@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class IridiumColorAPI {
+
     /**
      * The current version of the server in the a form of a major version.
      * If the static initialization for this fails, you know something's wrong with the server software.
@@ -147,7 +148,7 @@ public class IridiumColorAPI {
     /**
      * Returns a rainbow array of chat colors
      *
-     * @param step How many colors we return
+     * @param step       How many colors we return
      * @param saturation The saturation of the rainbow
      * @return The array of colors
      * @since 1.0.3
@@ -249,4 +250,5 @@ public class IridiumColorAPI {
 
         return version;
     }
+
 }

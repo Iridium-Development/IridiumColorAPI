@@ -2,7 +2,6 @@ package com.iridium.iridiumcolorapi.patterns;
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI;
 
-import java.awt.*;
 import java.util.regex.Matcher;
 
 public class RainbowPattern implements Pattern {
@@ -18,4 +17,5 @@ public class RainbowPattern implements Pattern {
         }
         return string;
     }
+
 }

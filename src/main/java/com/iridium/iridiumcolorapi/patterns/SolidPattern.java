@@ -16,4 +16,5 @@ public class SolidPattern implements Pattern {
         }
         return string;
     }
+
 }
