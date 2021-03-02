@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class IridiumColorAPI {
+
     /**
      * The current version of the server in the a form of a major version.
      * If the static initialization for this fails, you know something's wrong with the server software.
@@ -26,7 +27,7 @@ public class IridiumColorAPI {
     private static final int VERSION = Integer.parseInt(getMajorVersion(Bukkit.getVersion()).substring(2));
 
     /**
-     * Cached result if the server version is after the v1.16 rgb update.
+     * Cached result if the server version is after the v1.16 RGB update.
      *
      * @since 1.0.0
      */
@@ -56,7 +57,7 @@ public class IridiumColorAPI {
             .put(new Color(16777215), ChatColor.getByChar('f')).build();
 
     /**
-     * Cached result of patterns
+     * Cached result of patterns.
      *
      * @since 1.0.2
      */
@@ -64,12 +65,19 @@ public class IridiumColorAPI {
 
     /**
      * Processes a string to add color to it.
-     * Thanks to Distressing for helping  with the regex <3
+     * Thanks to Distressing for helping with the regex <3
      *
      * @param string The string we want to process
      * @since 1.0.0
      */
 
+    /**
+     * Applies all patterns and color codes to the provided String.
+     *
+     * @param string The String to which the patterns should be applied to
+     * @return The new String with applied patterns
+     * @since 1.0.0
+     */
     @Nonnull
     public static String process(@Nonnull String string) {
         string = ChatColor.translateAlternateColorCodes('&', string);
@@ -80,7 +88,7 @@ public class IridiumColorAPI {
     }
 
     /**
-     * Process multiple strings in a list
+     * Processes multiple strings in a list.
      *
      * @param strings The list of the strings we are processing
      * @return The list of processed strings
@@ -92,7 +100,7 @@ public class IridiumColorAPI {
     }
 
     /**
-     * Colors a String
+     * Colors a String.
      *
      * @param string The string we want to color
      * @param color  The color we want to set it to
@@ -104,7 +112,7 @@ public class IridiumColorAPI {
     }
 
     /**
-     * Colors a String with a gradiant
+     * Colors a String with a gradiant.
      *
      * @param string The string we want to color
      * @param start  The starting gradiant
@@ -122,6 +130,13 @@ public class IridiumColorAPI {
         return stringBuilder.toString();
     }
 
+    /**
+     * Colors a String with rainbow colors.
+     *
+     * @param string     The string which should have rainbow colors
+     * @param saturation The saturation of the rainbow colors
+     * @since 1.0.3
+     */
     @Nonnull
     public static String rainbow(@Nonnull String string, float saturation) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -134,7 +149,7 @@ public class IridiumColorAPI {
     }
 
     /**
-     * Get a color from hex code
+     * Gets a color from hex code.
      *
      * @param string The hex code of the color
      * @since 1.0.0
@@ -145,9 +160,9 @@ public class IridiumColorAPI {
     }
 
     /**
-     * Returns a rainbow array of chat colors
+     * Returns a rainbow array of chat colors.
      *
-     * @param step How many colors we return
+     * @param step       How many colors we return
      * @param saturation The saturation of the rainbow
      * @return The array of colors
      * @since 1.0.3
@@ -222,7 +237,7 @@ public class IridiumColorAPI {
     }
 
     /**
-     * Gets the exact major version (..., 1.9, 1.10, ..., 1.14)
+     * Gets the exact major version (..., 1.9, 1.10, ..., 1.14).
      * In most cases, you shouldn't be using this method.
      *
      * @param version Supports {@link Bukkit#getVersion()}, {@link Bukkit#getBukkitVersion()} and normal formats such as "1.14"
@@ -249,4 +264,5 @@ public class IridiumColorAPI {
 
         return version;
     }
+
 }
