@@ -76,7 +76,7 @@ public class IridiumColorAPI {
      *
      * @param string The String to which the patterns should be applied to
      * @return The new String with applied patterns
-     * @since 1.0.3
+     * @since 1.0.0
      */
     @Nonnull
     public static String process(@Nonnull String string) {
