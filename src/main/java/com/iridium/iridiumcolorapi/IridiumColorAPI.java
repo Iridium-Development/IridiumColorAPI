@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,8 @@ public class IridiumColorAPI {
      * @since 1.0.0
      */
     private static final boolean SUPPORTS_RGB = VERSION >= 16;
+
+    private static final List<String> SPECIAL_COLORS = Arrays.asList("&l", "&n", "&o", "&k", "&m");
 
     /**
      * Cached result of all legacy colors.
@@ -72,10 +75,10 @@ public class IridiumColorAPI {
      */
     @Nonnull
     public static String process(@Nonnull String string) {
-        string = ChatColor.translateAlternateColorCodes('&', string);
         for (Pattern pattern : PATTERNS) {
             string = pattern.process(string);
         }
+        string = ChatColor.translateAlternateColorCodes('&', string);
         return string;
     }
 
@@ -113,11 +116,18 @@ public class IridiumColorAPI {
      */
     @Nonnull
     public static String color(@Nonnull String string, @Nonnull Color start, @Nonnull Color end) {
+        StringBuilder specialColors = new StringBuilder();
+        for (String color : SPECIAL_COLORS) {
+            if (string.contains(color)) {
+                specialColors.append(color);
+                string = string.replace(color, "");
+            }
+        }
         StringBuilder stringBuilder = new StringBuilder();
         ChatColor[] colors = createGradient(start, end, string.length());
         String[] characters = string.split("");
         for (int i = 0; i < string.length(); i++) {
-            stringBuilder.append(colors[i]).append(characters[i]);
+            stringBuilder.append(colors[i]).append(specialColors).append(characters[i]);
         }
         return stringBuilder.toString();
     }
@@ -131,11 +141,18 @@ public class IridiumColorAPI {
      */
     @Nonnull
     public static String rainbow(@Nonnull String string, float saturation) {
+        StringBuilder specialColors = new StringBuilder();
+        for (String color : SPECIAL_COLORS) {
+            if (string.contains(color)) {
+                specialColors.append(color);
+                string = string.replace(color, "");
+            }
+        }
         StringBuilder stringBuilder = new StringBuilder();
         ChatColor[] colors = createRainbow(string.length(), saturation);
         String[] characters = string.split("");
         for (int i = 0; i < string.length(); i++) {
-            stringBuilder.append(colors[i]).append(characters[i]);
+            stringBuilder.append(colors[i]).append(specialColors).append(characters[i]);
         }
         return stringBuilder.toString();
     }
