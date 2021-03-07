@@ -70,14 +70,6 @@ public class IridiumColorAPI {
      * @param string The string we want to process
      * @since 1.0.0
      */
-
-    /**
-     * Applies all patterns and color codes to the provided String.
-     *
-     * @param string The String to which the patterns should be applied to
-     * @return The new String with applied patterns
-     * @since 1.0.0
-     */
     @Nonnull
     public static String process(@Nonnull String string) {
         string = ChatColor.translateAlternateColorCodes('&', string);

@@ -13,7 +13,7 @@ dependencies {
 }
 
 group = "com.iridium"
-version = "1.0.3"
+version = "1.0.4-b"
 description = "IridiumColorAPI"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
