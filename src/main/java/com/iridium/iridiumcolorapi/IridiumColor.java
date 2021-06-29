@@ -69,7 +69,7 @@ public class IridiumColor {
     }
 
     /**
-     * Saves an IridiumColor into a file configuration.
+     * Stores an IridiumColor into a file configuration.
      *
      * @param configuration a file configuration where you want to write the data.
      * @param location      path.
