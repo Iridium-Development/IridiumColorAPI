@@ -73,7 +73,8 @@ saveConfig();
 ```java
 IridiumColor colour = IridiumColorAPI.retrieve(fileConfiguration, path);
 ```
-##Note
+## Note
+
 If your server's version is pre 1.16, the plugin will draw the given string to the nearest supported colour value (as the image below)
 
 ![Legacy RGB](https://i.imgur.com/8RMmCAX.png)
