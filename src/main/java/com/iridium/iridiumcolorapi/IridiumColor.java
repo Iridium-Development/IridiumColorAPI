@@ -33,7 +33,7 @@ public class IridiumColor {
      * @throws NullPointerException if {@code text} is null.
      */
     public IridiumColor setText(String text) {
-        if (text == null) throw new NullPointerException("The variable text is null! ");
+        if (text == null) throw new IllegalArgumentException("The variable text is null! ");
         this.text = text;
         return this;
     }
