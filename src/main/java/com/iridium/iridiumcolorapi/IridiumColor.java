@@ -1,11 +1,18 @@
 package com.iridium.iridiumcolorapi;
 
+import com.iridium.iridiumcolorapi.patterns.GradientPattern;
 import com.iridium.iridiumcolorapi.patterns.PatternType;
-import com.iridium.iridiumcolorapi.patterns.handler.PatternHandler;
+import com.iridium.iridiumcolorapi.patterns.RainbowPattern;
+import com.iridium.iridiumcolorapi.patterns.SolidPattern;
 import com.iridium.iridiumcolorapi.patterns.pattern.Pattern;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class IridiumColor {
+
+    private static final List<Pattern> PATTERNS = Arrays.asList(new GradientPattern(), new SolidPattern(), new RainbowPattern());
 
     private PatternType patternType;
     private String text;
@@ -62,7 +69,7 @@ public class IridiumColor {
     public String process() {
         String string = "";
         if (text != null)
-            for (Pattern pattern : PatternHandler.PATTERNS)
+            for (Pattern pattern : PATTERNS)
                 if (pattern.getPatternType() == patternType)
                     string = pattern.process(text, values);
         return string;
