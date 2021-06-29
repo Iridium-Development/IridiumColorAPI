@@ -1,33 +1,24 @@
 package com.iridium.iridiumcolorapi.patterns;
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI;
+import com.iridium.iridiumcolorapi.patterns.pattern.Pattern;
 
 import java.awt.*;
-import java.util.regex.Matcher;
 
-/**
- * Represents a gradient color pattern which can be applied to a String.
- */
-public class GradientPattern implements Pattern {
+public class GradientPattern extends Pattern {
 
-    java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("<GRADIENT:([0-9A-Fa-f]{6})>(.*?)</GRADIENT:([0-9A-Fa-f]{6})>");
+    public GradientPattern() {
+        super(PatternType.GRADIENT);
+    }
 
     /**
-     * Applies a gradient pattern to the provided String.
-     * Output might me the same as the input if this pattern is not present.
-     *
-     * @param string The String to which this pattern should be applied to
-     * @return The new String with applied pattern
+     * Applies a gradient pattern to the given String.
+     * Output may be the same as the input if the given pattern isn't correct or something else.
      */
-    public String process(String string) {
-        Matcher matcher = pattern.matcher(string);
-        while (matcher.find()) {
-            String start = matcher.group(1);
-            String end = matcher.group(3);
-            String content = matcher.group(2);
-            string = string.replace(matcher.group(), IridiumColorAPI.color(content, new Color(Integer.parseInt(start, 16)), new Color(Integer.parseInt(end, 16))));
-        }
-        return string;
+    public String process(String text, String... values) {
+        String start = values[0],
+                end = values[0];
+        return IridiumColorAPI.color(text, new Color(Integer.parseInt(start, 16)), new Color(Integer.parseInt(end, 16)));
     }
 
 }

@@ -1,35 +1,30 @@
 package com.iridium.iridiumcolorapi;
 
 import com.google.common.collect.ImmutableMap;
-import com.iridium.iridiumcolorapi.patterns.GradientPattern;
-import com.iridium.iridiumcolorapi.patterns.Pattern;
-import com.iridium.iridiumcolorapi.patterns.RainbowPattern;
-import com.iridium.iridiumcolorapi.patterns.SolidPattern;
+import com.iridium.iridiumcolorapi.patterns.PatternType;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class IridiumColorAPI {
 
     /**
-     * The current version of the server in the a form of a major version.
-     * If the static initialization for this fails, you know something's wrong with the server software.
+     * The current version of the server in the form of a major version.
+     * If the static initialization for this fails then there's something wrong with the server software.
      *
      * @since 1.0.0
      */
     private static final int VERSION = Integer.parseInt(getMajorVersion(Bukkit.getVersion()).substring(2));
 
     /**
-     * Cached result if the server version is after the v1.16 RGB update.
-     *
      * @since 1.0.0
      */
     private static final boolean SUPPORTS_RGB = VERSION >= 16;
@@ -37,7 +32,7 @@ public class IridiumColorAPI {
     private static final List<String> SPECIAL_COLORS = Arrays.asList("&l", "&n", "&o", "&k", "&m");
 
     /**
-     * Cached result of all legacy colors.
+     * All legacy colours.
      *
      * @since 1.0.0
      */
@@ -60,56 +55,58 @@ public class IridiumColorAPI {
             .put(new Color(16777215), ChatColor.getByChar('f')).build();
 
     /**
-     * Cached result of patterns.
+     * Returns a new instance of IridiumColor.
      *
-     * @since 1.0.2
+     * @return a new instance of IridiumColor.
      */
-    private static final List<Pattern> PATTERNS = Arrays.asList(new GradientPattern(), new SolidPattern(), new RainbowPattern());
+    public static IridiumColor newInstance() {
+        return new IridiumColor();
+    }
 
     /**
-     * Processes a string to add color to it.
-     * Thanks to Distressing for helping with the regex <3
+     * Retrieves an IridiumColor from configuration.
      *
-     * @param string The string we want to process
+     * @param fileConfiguration a file configuration where you want to retrieve the IridiumColor.
+     * @param path              path of the iridium color.
+     * @return an instance of IridiumColor.
+     */
+    public static IridiumColor retrieve(@Nonnull FileConfiguration fileConfiguration, @Nonnull String path) {
+        if (!fileConfiguration.contains(path))
+            throw new IllegalArgumentException("There's no configuration section in the given path!");
+        ConfigurationSection section = fileConfiguration.getConfigurationSection(path);
+        String text = section.getString("text", "This is a text."),
+                type = section.getString("type", "SOLID"),
+                configValue = section.getString("value", "FF0080");
+        PatternType patternType = PatternType.valueOf(type);
+        String[] values = new String[patternType.getParametersSize()];
+        if (patternType == PatternType.GRADIENT) {
+            String[] split = configValue.split(";");
+            values[0] = split[0];
+            values[1] = split[1];
+        } else
+            values[0] = configValue;
+        return newInstance()
+                .setPatternType(patternType)
+                .setText(text)
+                .setValue(values);
+    }
+
+    /**
+     * colors the given string
+     *
+     * @param input String to color
+     * @param color Color that wants to set
      * @since 1.0.0
      */
     @Nonnull
-    public static String process(@Nonnull String string) {
-        for (Pattern pattern : PATTERNS) {
-            string = pattern.process(string);
-        }
-        string = ChatColor.translateAlternateColorCodes('&', string);
-        return string;
+    public static String color(@Nonnull String input, @Nonnull Color color) {
+        return (SUPPORTS_RGB ? ChatColor.of(color) : getClosestColor(color)) + input;
     }
 
     /**
-     * Processes multiple strings in a list.
+     * Colors a String with gradiant.
      *
-     * @param strings The list of the strings we are processing
-     * @return The list of processed strings
-     * @since 1.0.3
-     */
-    @Nonnull
-    public static List<String> process(@Nonnull List<String> strings) {
-        return strings.stream().map(IridiumColorAPI::process).collect(Collectors.toList());
-    }
-
-    /**
-     * Colors a String.
-     *
-     * @param string The string we want to color
-     * @param color  The color we want to set it to
-     * @since 1.0.0
-     */
-    @Nonnull
-    public static String color(@Nonnull String string, @Nonnull Color color) {
-        return (SUPPORTS_RGB ? ChatColor.of(color) : getClosestColor(color)) + string;
-    }
-
-    /**
-     * Colors a String with a gradiant.
-     *
-     * @param string The string we want to color
+     * @param string The string that wants to color
      * @param start  The starting gradiant
      * @param end    The ending gradiant
      * @since 1.0.0
@@ -133,10 +130,10 @@ public class IridiumColorAPI {
     }
 
     /**
-     * Colors a String with rainbow colors.
+     * Colors a String with rainbow.
      *
-     * @param string     The string which should have rainbow colors
-     * @param saturation The saturation of the rainbow colors
+     * @param string     The string that wants to rainbow
+     * @param saturation The saturation of the rainbow colour
      * @since 1.0.3
      */
     @Nonnull
@@ -158,9 +155,9 @@ public class IridiumColorAPI {
     }
 
     /**
-     * Gets a color from hex code.
+     * Get a colour from hex code.
      *
-     * @param string The hex code of the color
+     * @param string The colour's hex code
      * @since 1.0.0
      */
     @Nonnull
@@ -225,9 +222,9 @@ public class IridiumColorAPI {
 
 
     /**
-     * Returns the closest legacy color from an rgb color
+     * Returns the closest legacy colour from a rgb color.
      *
-     * @param color The color we want to transform
+     * @param color the Color that wants to transform
      * @since 1.0.0
      */
     @Nonnull
@@ -246,11 +243,11 @@ public class IridiumColorAPI {
     }
 
     /**
-     * Gets the exact major version (..., 1.9, 1.10, ..., 1.14).
-     * In most cases, you shouldn't be using this method.
+     * Get a major version (..., 1.9, 1.10, ..., 1.14).
+     * In most cases, you cannot use this method.
      *
      * @param version Supports {@link Bukkit#getVersion()}, {@link Bukkit#getBukkitVersion()} and normal formats such as "1.14"
-     * @return the exact major version.
+     * @return a String of a major version.
      * @since 1.0.0
      */
     @Nonnull

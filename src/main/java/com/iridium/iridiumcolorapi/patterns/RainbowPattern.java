@@ -1,28 +1,21 @@
 package com.iridium.iridiumcolorapi.patterns;
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI;
+import com.iridium.iridiumcolorapi.patterns.pattern.Pattern;
 
-import java.util.regex.Matcher;
+public class RainbowPattern extends Pattern {
 
-public class RainbowPattern implements Pattern {
-
-    java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("<RAINBOW([0-9]{1,3})>(.*?)</RAINBOW>");
+    public RainbowPattern() {
+        super(PatternType.RAINBOW);
+    }
 
     /**
-     * Applies a rainbow pattern to the provided String.
-     * Output might me the same as the input if this pattern is not present.
-     *
-     * @param string The String to which this pattern should be applied to
-     * @return The new String with applied pattern
+     * Applies a rainbow pattern to the given String.
+     * Output may be the same as the input if the given pattern isn't correct or something else.
      */
-    public String process(String string) {
-        Matcher matcher = pattern.matcher(string);
-        while (matcher.find()) {
-            String saturation = matcher.group(1);
-            String content = matcher.group(2);
-            string = string.replace(matcher.group(), IridiumColorAPI.rainbow(content, Float.parseFloat(saturation)));
-        }
-        return string;
+    public String process(String text, String... values) {
+        String saturation = values[0];
+        return IridiumColorAPI.rainbow(text, Float.parseFloat(saturation));
     }
 
 }

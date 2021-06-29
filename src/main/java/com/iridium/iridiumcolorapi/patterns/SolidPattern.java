@@ -1,27 +1,21 @@
 package com.iridium.iridiumcolorapi.patterns;
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI;
+import com.iridium.iridiumcolorapi.patterns.pattern.Pattern;
 
-import java.util.regex.Matcher;
+public class SolidPattern extends Pattern {
 
-public class SolidPattern implements Pattern {
-
-    java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("<SOLID:([0-9A-Fa-f]{6})>");
+    public SolidPattern() {
+        super(PatternType.SOLID);
+    }
 
     /**
-     * Applies a solid RGB color to the provided String.
-     * Output might me the same as the input if this pattern is not present.
-     *
-     * @param string The String to which this pattern should be applied to
-     * @return The new String with applied pattern
+     * Applies a solid RGB color to the given String.
+     * Output may be the same as the input if the given pattern isn't correct or something else.
      */
-    public String process(String string) {
-        Matcher matcher = pattern.matcher(string);
-        while (matcher.find()) {
-            String color = matcher.group(1);
-            string = string.replace(matcher.group(), IridiumColorAPI.getColor(color) + "");
-        }
-        return string;
+    public String process(String text, String... values) {
+        String color = values[0];
+        return IridiumColorAPI.getColor(color) + text;
     }
 
 }
