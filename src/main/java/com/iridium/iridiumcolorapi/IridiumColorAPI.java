@@ -169,6 +169,18 @@ public class IridiumColorAPI {
     }
 
     /**
+     * Removes all color codes from the provided String, including IridiumColorAPI patterns.
+     *
+     * @param string    The String which should be stripped
+     * @return          The stripped string without color codes
+     * @since 1.0.5
+     */
+    @Nonnull
+    public static String stripColorFormatting(@Nonnull String string) {
+        return string.replaceAll("([&§][a-f0-9lnokm])|(<(/)?\\w{6,8}(:[0-9A-F]{6})?>)", "");
+    }
+
+    /**
      * Returns a rainbow array of chat colors.
      *
      * @param step       How many colors we return
