@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 
 public class SolidPattern implements Pattern {
 
-    java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("<SOLID:([0-9A-Fa-f]{6})>");
+    java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("<SOLID:([0-9A-Fa-f]{6})>|#\\{([0-9A-Fa-f]{6})}");
 
     /**
      * Applies a solid RGB color to the provided String.
@@ -19,6 +19,8 @@ public class SolidPattern implements Pattern {
         Matcher matcher = pattern.matcher(string);
         while (matcher.find()) {
             String color = matcher.group(1);
+            if (color == null) color = matcher.group(2);
+
             string = string.replace(matcher.group(), IridiumColorAPI.getColor(color) + "");
         }
         return string;
