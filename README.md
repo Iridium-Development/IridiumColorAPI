@@ -2,8 +2,8 @@
 
 ```xml
 <repository>
-    <id>savagelabs</id>
-    <url>https://nexus.savagelabs.net/repository/maven-releases/</url>
+    <id>iridiumdevelopment</id>
+    <url>https://nexus.iridiumdevelopment.net/</url>
 </repository>
 ```
 ```xml
