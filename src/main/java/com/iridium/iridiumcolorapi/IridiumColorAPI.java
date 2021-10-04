@@ -177,7 +177,7 @@ public class IridiumColorAPI {
      */
     @Nonnull
     public static String stripColorFormatting(@Nonnull String string) {
-        return string.replaceAll("[&§][a-f0-9lnokm]|<[/]?\\w{5,8}(:[0-9A-F]{6})?>", "");
+        return string.replaceAll("[&§][a-f0-9lnokm]|<[/]?[A-Z]{5,8}(:[0-9A-F]{6})?>", "");
     }
 
     /**
