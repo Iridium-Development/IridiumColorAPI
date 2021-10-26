@@ -25,7 +25,7 @@ public class IridiumColorAPI {
      *
      * @since 1.0.0
      */
-    public static final int VERSION = getVersion();
+    private static final int VERSION = getVersion();
 
     /**
      * Cached result if the server version is after the v1.16 RGB update.
