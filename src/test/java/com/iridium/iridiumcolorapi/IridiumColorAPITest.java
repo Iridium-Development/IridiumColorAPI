@@ -56,11 +56,21 @@ class IridiumColorAPITest {
     }
 
     @Test
-    void getColor() {
-    }
-
-    @Test
     void stripColorFormatting() {
+        assertEquals("Test", IridiumColorAPI.stripColorFormatting("§8Test"));
+        assertEquals("Test", IridiumColorAPI.stripColorFormatting("§1T§1e§3s§3t"));
+        assertEquals("Test", IridiumColorAPI.stripColorFormatting("&1T§1e&3s§3t"));
+        assertEquals("Test", IridiumColorAPI.stripColorFormatting("&1T&1e&3s&3t"));
+        assertEquals("**************************************************************************************************************************************************************************", IridiumColorAPI.stripColorFormatting("§f*§7*§f*§7*§f*§7*§d*§f*§d*§f*§d*§f*§d*§f*§f*§7*§f*§7*§f*§7*§f*§7*§d*§f*§d*§f*§d*§f*§d*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§f*§e*§f*§7*§e*§7*§6*§7*§e*§f*§e*§6*§e*§e*§7*§c*§f*§e*§f*§7*§e*§f*§6*§d*§e*§f*§e*§6*§e*§7*§7*§e*§7*§7*§7*§e*§7*§7*§7*§c*§e*§7*§7*§c*§e*§7*§7*§e*§7*§7*§7*§e*§7*§7*§7*§c*§e*§7*§e*§7*§e*§7*§e*§7*§e*§e*§7*§e*§7*§e*§7*§e*§7*§7*§e*§7*§e*§7*§e*§7*§e*§e*§7*§e*§7*§e*§f*§6*§f*§e*§7*§6*§e*§f*§e*§f*§e*§f*§6*§e*§f*§e*§f*§e*§f*§e*§7*§6*§e*§f*§e*§f*§e*"));
+        assertEquals("Test", IridiumColorAPI.stripColorFormatting("<SOLID:123456>Test"));
+        assertEquals("Test", IridiumColorAPI.stripColorFormatting("<GRADIENT:2C08BA>Test</GRADIENT:028A97>"));
+        assertEquals("Test", IridiumColorAPI.stripColorFormatting("<RAINBOW1>Test</RAINBOW>"));
+        assertEquals("Test", IridiumColorAPI.stripColorFormatting("<RAINBOW100>Test</RAINBOW>"));
+
+        assertEquals("<player>", IridiumColorAPI.stripColorFormatting("<player>"));
+        assertEquals("<html>Test</html>", IridiumColorAPI.stripColorFormatting("<html>Test</html>"));
+        assertEquals("<windows>Test</tests100>", IridiumColorAPI.stripColorFormatting("<windows>Test</tests100>"));
+        assertEquals("&&&&&Test&&&&&", IridiumColorAPI.stripColorFormatting("&&&&&Test&&&&&"));
     }
 
     @AfterAll
