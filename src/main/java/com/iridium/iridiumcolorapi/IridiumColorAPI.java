@@ -25,7 +25,7 @@ public class IridiumColorAPI {
      *
      * @since 1.0.0
      */
-    private static final int VERSION = Integer.parseInt(getMajorVersion(Bukkit.getVersion()).substring(2));
+    public static final int VERSION = getVersion();
 
     /**
      * Cached result if the server version is after the v1.16 RGB update.
@@ -177,7 +177,7 @@ public class IridiumColorAPI {
      */
     @Nonnull
     public static String stripColorFormatting(@Nonnull String string) {
-        return string.replaceAll("<#[0-9A-F]{6}>|[&§][a-f0-9lnokm]|<[/]?[A-Z]{5,8}(:[0-9A-F]{6})?>", "");
+        return string.replaceAll("<#[0-9A-F]{6}>|[&§][a-f0-9lnokm]|<[/]?[A-Z]{5,8}(:[0-9A-F]{6})?[0-9]*>", "");
     }
 
     /**
@@ -258,15 +258,14 @@ public class IridiumColorAPI {
     }
 
     /**
-     * Gets the exact major version (..., 1.9, 1.10, ..., 1.14).
+     * Gets a simplified major version (..., 9, 10, ..., 14).
      * In most cases, you shouldn't be using this method.
      *
-     * @param version Supports {@link Bukkit#getVersion()}, {@link Bukkit#getBukkitVersion()} and normal formats such as "1.14"
-     * @return the exact major version.
+     * @return the simplified major version.
      * @since 1.0.0
      */
-    @Nonnull
-    private static String getMajorVersion(@Nonnull String version) {
+    private static int getVersion() {
+        String version = Bukkit.getVersion();
         Validate.notEmpty(version, "Cannot get major Minecraft version from null or empty string");
 
         // getVersion()
@@ -283,7 +282,7 @@ public class IridiumColorAPI {
         int lastDot = version.lastIndexOf('.');
         if (version.indexOf('.') != lastDot) version = version.substring(0, lastDot);
 
-        return version;
+        return Integer.parseInt(version.substring(2));
     }
 
 }
