@@ -70,7 +70,7 @@ class IridiumColorAPILegacyTest {
         assertEquals("<player>", IridiumColorAPI.stripColorFormatting("<player>"));
         assertEquals("<html>Test</html>", IridiumColorAPI.stripColorFormatting("<html>Test</html>"));
         assertEquals("<windows>Test</tests100>", IridiumColorAPI.stripColorFormatting("<windows>Test</tests100>"));
-        assertEquals("&&&&&Test&&&&&&", IridiumColorAPI.stripColorFormatting("&&&&&Test&&&&&"));
+        assertEquals("&&&&&Test&&&&&", IridiumColorAPI.stripColorFormatting("&&&&&Test&&&&&"));
     }
 
     @AfterAll
