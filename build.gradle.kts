@@ -3,10 +3,13 @@ plugins {
     `maven-publish`
 }
 
+group = "com.iridium"
+version = "1.0.5"
+description = "IridiumColorAPI"
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+
 repositories {
-    mavenLocal()
     maven("https://repo.rosewooddev.io/repository/public/")
-    maven("https://repo.maven.apache.org/maven2/")
     mavenCentral()
 }
 
@@ -16,11 +19,6 @@ dependencies {
     testImplementation("org.mockito:mockito-junit-jupiter:4.0.0")
     testImplementation("org.mockito:mockito-inline:4.0.0")
 }
-
-group = "com.iridium"
-version = "1.0.5"
-description = "IridiumColorAPI"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 publishing {
     publications.create<MavenPublication>("maven") {
