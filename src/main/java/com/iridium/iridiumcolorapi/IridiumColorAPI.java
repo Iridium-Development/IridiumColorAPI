@@ -78,6 +78,7 @@ public class IridiumColorAPI {
         for (Pattern pattern : PATTERNS) {
             string = pattern.process(string);
         }
+        
         string = ChatColor.translateAlternateColorCodes('&', string);
         return string;
     }
@@ -91,7 +92,9 @@ public class IridiumColorAPI {
      */
     @Nonnull
     public static List<String> process(@Nonnull List<String> strings) {
-        return strings.stream().map(IridiumColorAPI::process).collect(Collectors.toList());
+        return strings.stream()
+            .map(IridiumColorAPI::process)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -123,12 +126,14 @@ public class IridiumColorAPI {
                 string = string.replace(color, "");
             }
         }
+        
         StringBuilder stringBuilder = new StringBuilder();
         ChatColor[] colors = createGradient(start, end, string.length());
         String[] characters = string.split("");
         for (int i = 0; i < string.length(); i++) {
             stringBuilder.append(colors[i]).append(specialColors).append(characters[i]);
         }
+        
         return stringBuilder.toString();
     }
 
@@ -148,12 +153,14 @@ public class IridiumColorAPI {
                 string = string.replace(color, "");
             }
         }
+        
         StringBuilder stringBuilder = new StringBuilder();
         ChatColor[] colors = createRainbow(string.length(), saturation);
         String[] characters = string.split("");
         for (int i = 0; i < string.length(); i++) {
             stringBuilder.append(colors[i]).append(specialColors).append(characters[i]);
         }
+        
         return stringBuilder.toString();
     }
 
@@ -192,6 +199,7 @@ public class IridiumColorAPI {
     private static ChatColor[] createRainbow(int step, float saturation) {
         ChatColor[] colors = new ChatColor[step];
         double colorStep = (1.00 / step);
+        
         for (int i = 0; i < step; i++) {
             Color color = Color.getHSBColor((float) (colorStep * i), saturation, saturation);
             if (SUPPORTS_RGB) {
@@ -200,6 +208,7 @@ public class IridiumColorAPI {
                 colors[i] = getClosestColor(color);
             }
         }
+        
         return colors;
     }
 
@@ -218,7 +227,7 @@ public class IridiumColorAPI {
         int stepR = Math.abs(start.getRed() - end.getRed()) / (step - 1);
         int stepG = Math.abs(start.getGreen() - end.getGreen()) / (step - 1);
         int stepB = Math.abs(start.getBlue() - end.getBlue()) / (step - 1);
-        int[] direction = new int[]{
+        int[] direction = new int[] {
                 start.getRed() < end.getRed() ? +1 : -1,
                 start.getGreen() < end.getGreen() ? +1 : -1,
                 start.getBlue() < end.getBlue() ? +1 : -1
@@ -232,6 +241,7 @@ public class IridiumColorAPI {
                 colors[i] = getClosestColor(color);
             }
         }
+        
         return colors;
     }
 
