@@ -3,7 +3,7 @@
 ```xml
 <repository>
     <id>iridiumdevelopment</id>
-    <url>https://nexus.iridiumdevelopment.net/</url>
+    <url>https://nexus.iridiumdevelopment.net/repository/maven-releases/</url>
 </repository>
 ```
 ```xml
