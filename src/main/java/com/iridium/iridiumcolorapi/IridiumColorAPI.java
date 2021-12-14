@@ -34,7 +34,7 @@ public class IridiumColorAPI {
      */
     private static final boolean SUPPORTS_RGB = VERSION >= 16;
 
-    private static final List<String> SPECIAL_COLORS = Arrays.asList("&l", "&n", "&o", "&k", "&m");
+    private static final List<String> SPECIAL_COLORS = Arrays.asList("&l", "&n", "&o", "&k", "&m","§l", "§n", "§o", "§k", "§m");
 
     /**
      * Cached result of all legacy colors.
