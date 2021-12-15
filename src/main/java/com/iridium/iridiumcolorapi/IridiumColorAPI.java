@@ -136,9 +136,8 @@ public class IridiumColorAPI {
     @Nonnull
     public static String rainbow(@Nonnull String string, float saturation) {
         String originalString = string;
-        string = withoutSpecialChar(string);
 
-        ChatColor[] colors = createRainbow(string.length(), saturation);
+        ChatColor[] colors = createRainbow(withoutSpecialChar(string).length(), saturation);
         return apply(originalString, colors);
     }
 
@@ -193,12 +192,13 @@ public class IridiumColorAPI {
 
     @Nonnull
     private static String withoutSpecialChar(@Nonnull String source) {
+        String workingString = source;
         for (String color : SPECIAL_COLORS) {
-            if (source.contains(color)) {
-                source = source.replace(color, "");
+            if (workingString.contains(color)) {
+                workingString = workingString.replace(color, "");
             }
         }
-        return source;
+        return workingString;
     }
 
     /**
