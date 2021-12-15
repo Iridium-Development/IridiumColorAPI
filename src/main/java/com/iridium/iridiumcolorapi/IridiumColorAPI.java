@@ -21,7 +21,8 @@ public class IridiumColorAPI {
 
     /**
      * The current version of the server in the a form of a major version.
-     * If the static initialization for this fails, you know something's wrong with the server software.
+     * If the static initialization for this fails, you know something's wrong with
+     * the server software.
      *
      * @since 1.0.0
      */
@@ -34,7 +35,8 @@ public class IridiumColorAPI {
      */
     private static final boolean SUPPORTS_RGB = VERSION >= 16;
 
-    private static final List<String> SPECIAL_COLORS = Arrays.asList("&l", "&n", "&o", "&k", "&m","§l", "§n", "§o", "§k", "§m");
+    private static final List<String> SPECIAL_COLORS = Arrays.asList("&l", "&n", "&o", "&k", "&m", "§l", "§n", "§o",
+            "§k", "§m");
 
     /**
      * Cached result of all legacy colors.
@@ -64,7 +66,8 @@ public class IridiumColorAPI {
      *
      * @since 1.0.2
      */
-    private static final List<Pattern> PATTERNS = Arrays.asList(new GradientPattern(), new SolidPattern(), new RainbowPattern());
+    private static final List<Pattern> PATTERNS = Arrays.asList(new GradientPattern(), new SolidPattern(),
+            new RainbowPattern());
 
     /**
      * Processes a string to add color to it.
@@ -78,7 +81,7 @@ public class IridiumColorAPI {
         for (Pattern pattern : PATTERNS) {
             string = pattern.process(string);
         }
-        
+
         string = ChatColor.translateAlternateColorCodes('&', string);
         return string;
     }
@@ -93,8 +96,8 @@ public class IridiumColorAPI {
     @Nonnull
     public static List<String> process(@Nonnull List<String> strings) {
         return strings.stream()
-            .map(IridiumColorAPI::process)
-            .collect(Collectors.toList());
+                .map(IridiumColorAPI::process)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -119,22 +122,10 @@ public class IridiumColorAPI {
      */
     @Nonnull
     public static String color(@Nonnull String string, @Nonnull Color start, @Nonnull Color end) {
-        StringBuilder specialColors = new StringBuilder();
-        for (String color : SPECIAL_COLORS) {
-            if (string.contains(color)) {
-                specialColors.append(color);
-                string = string.replace(color, "");
-            }
-        }
-        
-        StringBuilder stringBuilder = new StringBuilder();
+        String originalString = string;
+        string = withoutSpecialChar(string);
         ChatColor[] colors = createGradient(start, end, string.length());
-        String[] characters = string.split("");
-        for (int i = 0; i < string.length(); i++) {
-            stringBuilder.append(colors[i]).append(specialColors).append(characters[i]);
-        }
-        
-        return stringBuilder.toString();
+        return apply(originalString, colors);
     }
 
     /**
@@ -146,22 +137,11 @@ public class IridiumColorAPI {
      */
     @Nonnull
     public static String rainbow(@Nonnull String string, float saturation) {
-        StringBuilder specialColors = new StringBuilder();
-        for (String color : SPECIAL_COLORS) {
-            if (string.contains(color)) {
-                specialColors.append(color);
-                string = string.replace(color, "");
-            }
-        }
-        
-        StringBuilder stringBuilder = new StringBuilder();
+        String originalString = string;
+        string = withoutSpecialChar(string);
+
         ChatColor[] colors = createRainbow(string.length(), saturation);
-        String[] characters = string.split("");
-        for (int i = 0; i < string.length(); i++) {
-            stringBuilder.append(colors[i]).append(specialColors).append(characters[i]);
-        }
-        
-        return stringBuilder.toString();
+        return apply(originalString, colors);
     }
 
     /**
@@ -172,19 +152,55 @@ public class IridiumColorAPI {
      */
     @Nonnull
     public static ChatColor getColor(@Nonnull String string) {
-        return SUPPORTS_RGB ? ChatColor.of(new Color(Integer.parseInt(string, 16))) : getClosestColor(new Color(Integer.parseInt(string, 16)));
+        return SUPPORTS_RGB ? ChatColor.of(new Color(Integer.parseInt(string, 16)))
+                : getClosestColor(new Color(Integer.parseInt(string, 16)));
     }
 
     /**
-     * Removes all color codes from the provided String, including IridiumColorAPI patterns.
+     * Removes all color codes from the provided String, including IridiumColorAPI
+     * patterns.
      *
-     * @param string    The String which should be stripped
-     * @return          The stripped string without color codes
+     * @param string The String which should be stripped
+     * @return The stripped string without color codes
      * @since 1.0.5
      */
     @Nonnull
     public static String stripColorFormatting(@Nonnull String string) {
         return string.replaceAll("<#[0-9A-F]{6}>|[&§][a-f0-9lnokm]|<[/]?[A-Z]{5,8}(:[0-9A-F]{6})?[0-9]*>", "");
+    }
+
+    @Nonnull
+    private static String apply(@Nonnull String source, ChatColor[] colors) {
+        StringBuilder specialColors = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
+        String[] characters = source.split("");
+        int outIndex = 0;
+        for (int i = 0; i < characters.length; i++) {
+            if (characters[i].equals("&") || characters[i].equals("§")) {
+                if (i + 1 < characters.length) {
+                    if (characters[i + 1].equals("r")) {
+                        specialColors.setLength(0);
+                    } else {
+                        specialColors.append(characters[i]);
+                        specialColors.append(characters[i + 1]);
+                    }
+                    i++;
+                } else
+                    stringBuilder.append(colors[outIndex++]).append(specialColors).append(characters[i]);
+            } else
+                stringBuilder.append(colors[outIndex++]).append(specialColors).append(characters[i]);
+        }
+        return stringBuilder.toString();
+    }
+
+    @Nonnull
+    private static String withoutSpecialChar(@Nonnull String source) {
+        for (String color : SPECIAL_COLORS) {
+            if (source.contains(color)) {
+                source = source.replace(color, "");
+            }
+        }
+        return source;
     }
 
     /**
@@ -199,7 +215,7 @@ public class IridiumColorAPI {
     private static ChatColor[] createRainbow(int step, float saturation) {
         ChatColor[] colors = new ChatColor[step];
         double colorStep = (1.00 / step);
-        
+
         for (int i = 0; i < step; i++) {
             Color color = Color.getHSBColor((float) (colorStep * i), saturation, saturation);
             if (SUPPORTS_RGB) {
@@ -208,7 +224,7 @@ public class IridiumColorAPI {
                 colors[i] = getClosestColor(color);
             }
         }
-        
+
         return colors;
     }
 
@@ -234,17 +250,17 @@ public class IridiumColorAPI {
         };
 
         for (int i = 0; i < step; i++) {
-            Color color = new Color(start.getRed() + ((stepR * i) * direction[0]), start.getGreen() + ((stepG * i) * direction[1]), start.getBlue() + ((stepB * i) * direction[2]));
+            Color color = new Color(start.getRed() + ((stepR * i) * direction[0]),
+                    start.getGreen() + ((stepG * i) * direction[1]), start.getBlue() + ((stepB * i) * direction[2]));
             if (SUPPORTS_RGB) {
                 colors[i] = ChatColor.of(color);
             } else {
                 colors[i] = getClosestColor(color);
             }
         }
-        
+
         return colors;
     }
-
 
     /**
      * Returns the closest legacy color from an rgb color
@@ -258,7 +274,9 @@ public class IridiumColorAPI {
         double nearestDistance = Integer.MAX_VALUE;
 
         for (Color constantColor : COLORS.keySet()) {
-            double distance = Math.pow(color.getRed() - constantColor.getRed(), 2) + Math.pow(color.getGreen() - constantColor.getGreen(), 2) + Math.pow(color.getBlue() - constantColor.getBlue(), 2);
+            double distance = Math.pow(color.getRed() - constantColor.getRed(), 2)
+                    + Math.pow(color.getGreen() - constantColor.getGreen(), 2)
+                    + Math.pow(color.getBlue() - constantColor.getBlue(), 2);
             if (nearestDistance > distance) {
                 nearestColor = constantColor;
                 nearestDistance = distance;
@@ -290,7 +308,8 @@ public class IridiumColorAPI {
 
         // 1.13.2, 1.14.4, etc...
         int lastDot = version.lastIndexOf('.');
-        if (version.indexOf('.') != lastDot) version = version.substring(0, lastDot);
+        if (version.indexOf('.') != lastDot)
+            version = version.substring(0, lastDot);
 
         return Integer.parseInt(version.substring(2));
     }
