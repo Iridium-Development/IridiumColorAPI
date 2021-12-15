@@ -121,8 +121,8 @@ public class IridiumColorAPI {
     @Nonnull
     public static String color(@Nonnull String string, @Nonnull Color start, @Nonnull Color end) {
         String originalString = string;
-        string = withoutSpecialChar(string);
-        ChatColor[] colors = createGradient(start, end, string.length());
+        
+        ChatColor[] colors = createGradient(start, end, withoutSpecialChar(string).length());
         return apply(originalString, colors);
     }
 
