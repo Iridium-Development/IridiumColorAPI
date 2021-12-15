@@ -35,8 +35,7 @@ public class IridiumColorAPI {
      */
     private static final boolean SUPPORTS_RGB = VERSION >= 16;
 
-    private static final List<String> SPECIAL_COLORS = Arrays.asList("&l", "&n", "&o", "&k", "&m", "§l", "§n", "§o",
-            "§k", "§m");
+    private static final List<String> SPECIAL_COLORS = Arrays.asList("&l", "&n", "&o", "&k", "&m", "§l", "§n", "§o", "§k", "§m");
 
     /**
      * Cached result of all legacy colors.
@@ -66,8 +65,7 @@ public class IridiumColorAPI {
      *
      * @since 1.0.2
      */
-    private static final List<Pattern> PATTERNS = Arrays.asList(new GradientPattern(), new SolidPattern(),
-            new RainbowPattern());
+    private static final List<Pattern> PATTERNS = Arrays.asList(new GradientPattern(), new SolidPattern(), new RainbowPattern());
 
     /**
      * Processes a string to add color to it.
@@ -250,8 +248,7 @@ public class IridiumColorAPI {
         };
 
         for (int i = 0; i < step; i++) {
-            Color color = new Color(start.getRed() + ((stepR * i) * direction[0]),
-                    start.getGreen() + ((stepG * i) * direction[1]), start.getBlue() + ((stepB * i) * direction[2]));
+            Color color = new Color(start.getRed() + ((stepR * i) * direction[0]), start.getGreen() + ((stepG * i) * direction[1]), start.getBlue() + ((stepB * i) * direction[2]));
             if (SUPPORTS_RGB) {
                 colors[i] = ChatColor.of(color);
             } else {
@@ -274,9 +271,7 @@ public class IridiumColorAPI {
         double nearestDistance = Integer.MAX_VALUE;
 
         for (Color constantColor : COLORS.keySet()) {
-            double distance = Math.pow(color.getRed() - constantColor.getRed(), 2)
-                    + Math.pow(color.getGreen() - constantColor.getGreen(), 2)
-                    + Math.pow(color.getBlue() - constantColor.getBlue(), 2);
+            double distance = Math.pow(color.getRed() - constantColor.getRed(), 2) + Math.pow(color.getGreen() - constantColor.getGreen(), 2) + Math.pow(color.getBlue() - constantColor.getBlue(), 2);
             if (nearestDistance > distance) {
                 nearestColor = constantColor;
                 nearestDistance = distance;
@@ -308,8 +303,7 @@ public class IridiumColorAPI {
 
         // 1.13.2, 1.14.4, etc...
         int lastDot = version.lastIndexOf('.');
-        if (version.indexOf('.') != lastDot)
-            version = version.substring(0, lastDot);
+        if (version.indexOf('.') != lastDot) version = version.substring(0, lastDot);
 
         return Integer.parseInt(version.substring(2));
     }
