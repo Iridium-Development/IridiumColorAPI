@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class IridiumColorAPI {
@@ -85,14 +86,14 @@ public class IridiumColorAPI {
     }
 
     /**
-     * Processes multiple strings in a list.
+     * Processes multiple strings in a collection.
      *
-     * @param strings The list of the strings we are processing
+     * @param strings The collection of the strings we are processing
      * @return The list of processed strings
      * @since 1.0.3
      */
     @Nonnull
-    public static List<String> process(@Nonnull List<String> strings) {
+    public static List<String> process(@Nonnull Collection<String> strings) {
         return strings.stream()
                 .map(IridiumColorAPI::process)
                 .collect(Collectors.toList());
