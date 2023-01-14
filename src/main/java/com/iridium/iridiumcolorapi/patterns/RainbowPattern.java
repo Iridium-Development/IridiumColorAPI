@@ -22,10 +22,14 @@ public class RainbowPattern implements Pattern {
 			String colon = matcher.group(1);
 			String saturation = matcher.group(1);
 			String content = matcher.group(2);
+
 			if (colon.equals(":")) {
 				string = string.replace(matcher.group(), IridiumColorAPI.rainbow(content, Float.parseFloat(saturation)));
 			} else {
-				string = string.replace(matcher.group(), IridiumColorAPI.rainbow(content, Float.parseFloat("1")));
+				if (saturation.isEmpty()) {
+					string = string.replace(matcher.group(), IridiumColorAPI.rainbow(content, Float.parseFloat("1")));
+				} else
+					string = string.replace(matcher.group(), IridiumColorAPI.rainbow(content, Float.parseFloat(saturation)));
 
 			}
 		}
