@@ -27,7 +27,7 @@ jobs:
         uses: "actions/upload-artifact@v2.2.3"
         with:
           name: "IridiumColorApi"
-          path: "build/libs/IridiumColorApi-*.jar"
+          path: "build/libs/IridiumColorAPI-*.jar"
   upload:
     needs: build
     runs-on: ubuntu-latest
@@ -52,4 +52,4 @@ jobs:
           repository: "maven-releases"
           coordinates: "groupId=com.iridium artifactId=IridiumColorApi version=${{steps.version.outputs.version}} generate-pom=on"
           assets: "extension=jar"
-          filename: "IridiumColorApi-*.jar"
+          filename: "IridiumColorAPI-*.jar"
