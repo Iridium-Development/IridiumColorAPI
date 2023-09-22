@@ -26,7 +26,7 @@ jobs:
       - name: Upload artifacts
         uses: "actions/upload-artifact@v2.2.3"
         with:
-          name: "IridiumColorApi"
+          name: "IridiumColorAPI"
           path: "build/libs/IridiumColorAPI-*.jar"
   upload:
     needs: build
@@ -40,7 +40,7 @@ jobs:
           file: "build.gradle.kts"
       - uses: actions/download-artifact@v3.0.2
         with:
-          name: "IridiumColorApi"
+          name: "IridiumColorAPI"
           path: "./"
       - name: Publish to Nexus
         uses: sonatype-nexus-community/nexus-repo-github-action@master
@@ -50,6 +50,6 @@ jobs:
           password: "${{ secrets.NEXUS_PASSWORD }}"
           format: "maven2"
           repository: "maven-releases"
-          coordinates: "groupId=com.iridium artifactId=IridiumColorApi version=${{steps.version.outputs.version}} generate-pom=on"
+          coordinates: "groupId=com.iridium artifactId=IridiumColorAPI version=${{steps.version.outputs.version}} generate-pom=on"
           assets: "extension=jar"
           filename: "IridiumColorAPI-*.jar"
