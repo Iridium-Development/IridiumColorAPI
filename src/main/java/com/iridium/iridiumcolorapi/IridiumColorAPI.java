@@ -175,7 +175,7 @@ public class IridiumColorAPI {
             }
 
             char nextChar = source.charAt(i + 1);
-            if ('r' == nextChar) {
+            if ('r' == nextChar || 'R' == nextChar) {
                 specialColors.setLength(0);
             } else {
                 specialColors.append(currentChar).append(nextChar);
