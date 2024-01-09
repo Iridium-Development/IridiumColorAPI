@@ -26,6 +26,10 @@ publishing {
     }
 }
 
+tasks.withType<JavaCompile>().configureEach {
+    options.encoding = "UTF-8"
+}
+
 tasks {
     build {
         dependsOn(test)
