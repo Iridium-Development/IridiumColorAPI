@@ -6,6 +6,7 @@ import com.iridium.iridiumcolorapi.patterns.Pattern;
 import com.iridium.iridiumcolorapi.patterns.RainbowPattern;
 import com.iridium.iridiumcolorapi.patterns.SolidPattern;
 import net.md_5.bungee.api.ChatColor;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;
@@ -285,8 +286,24 @@ public class IridiumColorAPI {
         if (!classExists("org.bukkit.Bukkit") && classExists("net.md_5.bungee.api.ChatColor")) {
             return -1;
         }
-        String version = Bukkit.getServer().getClass().getPackage().getName().substring(24);
-        return Integer.parseInt(version.split("_")[1]);
+
+        String version = Bukkit.getVersion();
+        Validate.notEmpty(version, "Cannot get major Minecraft version from null or empty string");
+
+        // getVersion()
+        int index = version.lastIndexOf("MC:");
+        if (index != -1) {
+            version = version.substring(index + 4, version.length() - 1);
+        } else if (version.endsWith("SNAPSHOT")) {
+            // getBukkitVersion()
+            index = version.indexOf('-');
+            version = version.substring(0, index);
+        }
+        // 1.13.2, 1.14.4, etc...
+        int lastDot = version.lastIndexOf('.');
+        if (version.indexOf('.') != lastDot) version = version.substring(0, lastDot);
+
+        return Integer.parseInt(version.substring(2));
     }
 
     /**
