@@ -11,7 +11,6 @@ import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +33,7 @@ public class IridiumColorAPI {
      *
      * @since 1.0.0
      */
-    private static final boolean SUPPORTS_RGB = VERSION >= 16;
+    private static final boolean SUPPORTS_RGB = VERSION >= 16 || VERSION == -1;
 
     private static final List<String> SPECIAL_COLORS = Arrays.asList("&l", "&n", "&o", "&k", "&m", "§l", "§n", "§o", "§k", "§m");
 
@@ -81,8 +80,7 @@ public class IridiumColorAPI {
             string = pattern.process(string);
         }
 
-        string = ChatColor.translateAlternateColorCodes('&', string);
-        return string;
+        return ChatColor.translateAlternateColorCodes('&', string);
     }
 
     /**
@@ -121,10 +119,8 @@ public class IridiumColorAPI {
      */
     @Nonnull
     public static String color(@Nonnull String string, @Nonnull Color start, @Nonnull Color end) {
-        String originalString = string;
-        
         ChatColor[] colors = createGradient(start, end, withoutSpecialChar(string).length());
-        return apply(originalString, colors);
+        return apply(string, colors);
     }
 
     /**
@@ -136,10 +132,8 @@ public class IridiumColorAPI {
      */
     @Nonnull
     public static String rainbow(@Nonnull String string, float saturation) {
-        String originalString = string;
-
         ChatColor[] colors = createRainbow(withoutSpecialChar(string).length(), saturation);
-        return apply(originalString, colors);
+        return apply(string, colors);
     }
 
     /**
@@ -171,22 +165,22 @@ public class IridiumColorAPI {
     private static String apply(@Nonnull String source, ChatColor[] colors) {
         StringBuilder specialColors = new StringBuilder();
         StringBuilder stringBuilder = new StringBuilder();
-        String[] characters = source.split("");
         int outIndex = 0;
-        for (int i = 0; i < characters.length; i++) {
-            if (characters[i].equals("&") || characters[i].equals("§")) {
-                if (i + 1 < characters.length) {
-                    if (characters[i + 1].equals("r")) {
-                        specialColors.setLength(0);
-                    } else {
-                        specialColors.append(characters[i]);
-                        specialColors.append(characters[i + 1]);
-                    }
-                    i++;
-                } else
-                    stringBuilder.append(colors[outIndex++]).append(specialColors).append(characters[i]);
-            } else
-                stringBuilder.append(colors[outIndex++]).append(specialColors).append(characters[i]);
+
+        for (int i = 0; i < source.length(); i++) {
+            char currentChar = source.charAt(i);
+            if (('&' != currentChar && '§' != currentChar) || i + 1 >= source.length()) {
+                stringBuilder.append(colors[outIndex++]).append(specialColors).append(currentChar);
+                continue;
+            }
+
+            char nextChar = source.charAt(i + 1);
+            if ('r' == nextChar || 'R' == nextChar) {
+                specialColors.setLength(0);
+            } else {
+                specialColors.append(currentChar).append(nextChar);
+            }
+            i++;
         }
         return stringBuilder.toString();
     }
@@ -285,10 +279,14 @@ public class IridiumColorAPI {
      * Gets a simplified major version (..., 9, 10, ..., 14).
      * In most cases, you shouldn't be using this method.
      *
-     * @return the simplified major version.
+     * @return the simplified major version, or -1 for bungeecord
      * @since 1.0.0
      */
     private static int getVersion() {
+        if (!classExists("org.bukkit.Bukkit") && classExists("net.md_5.bungee.api.ChatColor")) {
+            return -1;
+        }
+
         String version = Bukkit.getVersion();
         Validate.notEmpty(version, "Cannot get major Minecraft version from null or empty string");
 
@@ -301,12 +299,27 @@ public class IridiumColorAPI {
             index = version.indexOf('-');
             version = version.substring(0, index);
         }
-
         // 1.13.2, 1.14.4, etc...
         int lastDot = version.lastIndexOf('.');
         if (version.indexOf('.') != lastDot) version = version.substring(0, lastDot);
 
         return Integer.parseInt(version.substring(2));
+    }
+
+    /**
+     * Checks if a class exists in the current server
+     *
+     * @param path The path of that class
+     * @return true if the class exists, false if it doesn't
+     * @since 1.0.7
+     */
+    private static boolean classExists(final String path) {
+        try {
+            Class.forName(path);
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
 }
