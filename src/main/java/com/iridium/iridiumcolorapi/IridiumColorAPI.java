@@ -232,6 +232,7 @@ public class IridiumColorAPI {
      */
     @Nonnull
     private static ChatColor[] createGradient(@Nonnull Color start, @Nonnull Color end, int step) {
+        step = Math.max(step,2);
         ChatColor[] colors = new ChatColor[step];
         int stepR = Math.abs(start.getRed() - end.getRed()) / (step - 1);
         int stepG = Math.abs(start.getGreen() - end.getGreen()) / (step - 1);
