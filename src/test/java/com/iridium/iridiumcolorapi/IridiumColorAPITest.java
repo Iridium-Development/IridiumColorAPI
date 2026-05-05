@@ -4,10 +4,14 @@ import org.bukkit.Bukkit;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.awt.Color;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
@@ -76,6 +80,28 @@ class IridiumColorAPITest {
         assertEquals("<html>Test</html>", IridiumColorAPI.stripColorFormatting("<html>Test</html>"));
         assertEquals("<windows>Test</tests100>", IridiumColorAPI.stripColorFormatting("<windows>Test</tests100>"));
         assertEquals("&&&&&Test&&&&&", IridiumColorAPI.stripColorFormatting("&&&&&Test&&&&&"));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "1.8.8-R0.1-SNAPSHOT,8",
+            "1.12-R0.1-SNAPSHOT,12",
+            "1.20.6-R0.1-SNAPSHOT,20",
+            "git-Paper-43 (MC: 1.20.1),20",
+            "git-Purpur-2231 (MC: 1.16.5),16",
+            "26.1.2-R0.1-SNAPSHOT,26",
+            "26.1.2-49-main@7799bf2 (2026-04-26T20:59:50Z),26"
+    })
+    void getVersionParsesSupportedServerFormats(String version, int expected) throws Exception {
+        mockedStatic.when(Bukkit::getVersion).thenReturn(version);
+
+        assertEquals(expected, invokeGetVersion());
+    }
+
+    private static int invokeGetVersion() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method method = IridiumColorAPI.class.getDeclaredMethod("getVersion");
+        method.setAccessible(true);
+        return (int) method.invoke(null);
     }
 
     @AfterAll

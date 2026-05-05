@@ -291,20 +291,26 @@ public class IridiumColorAPI {
         String version = Bukkit.getVersion();
         Validate.notEmpty(version, "Cannot get major Minecraft version from null or empty string");
 
-        // getVersion()
         int index = version.lastIndexOf("MC:");
         if (index != -1) {
-            version = version.substring(index + 4, version.length() - 1);
-        } else if (version.endsWith("SNAPSHOT")) {
-            // getBukkitVersion()
+            int endIndex = version.indexOf(')', index);
+            version = version.substring(index + 3, endIndex == -1 ? version.length() : endIndex).trim();
+        } else {
             index = version.indexOf('-');
-            version = version.substring(0, index);
-        }
-        // 1.13.2, 1.14.4, etc...
-        int lastDot = version.lastIndexOf('.');
-        if (version.indexOf('.') != lastDot) version = version.substring(0, lastDot);
 
-        return Integer.parseInt(version.substring(2));
+            if (index != -1) {
+                version = version.substring(0, index);
+            }
+        }
+
+        String[] parts = version.trim().split("\\.");
+        Validate.isTrue(parts.length > 0, "Cannot extract major Minecraft version from %s", version);
+
+        if (parts.length > 1 && "1".equals(parts[0])) {
+            return Integer.parseInt(parts[1]);
+        }
+
+        return Integer.parseInt(parts[0]);
     }
 
     /**

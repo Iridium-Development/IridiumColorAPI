@@ -14,8 +14,9 @@ repositories {
 }
 
 dependencies {
-    implementation("org.spigotmc:spigot:1.17.1")
+    compileOnly("org.spigotmc:spigot:1.17.1")
     implementation("org.apache.commons:commons-lang3:3.13.0")
+    testImplementation("org.spigotmc:spigot:1.17.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testImplementation("org.mockito:mockito-inline:4.0.0")
     testImplementation("org.mockito:mockito-junit-jupiter:4.0.0")
