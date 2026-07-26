@@ -278,6 +278,11 @@ public class IridiumColorAPI {
 
     /**
      * Gets a simplified major version (..., 9, 10, ..., 14).
+     * <p>
+     * Minecraft historically versioned Java Edition as {@code 1.X} (e.g. {@code 1.16}, {@code 1.21}).
+     * Starting in 2026, Mojang moved to a year-based scheme, e.g. {@code 26.1}, {@code 26.2}, {@code 27.1}.
+     * Since every year-based release postdates the {@code 1.16} RGB update, any version whose major
+     * component isn't {@code 1} is treated as unconditionally RGB-capable by returning a value {@code >= 16}.
      * In most cases, you shouldn't be using this method.
      *
      * @return the simplified major version, or -1 for bungeecord
@@ -300,11 +305,22 @@ public class IridiumColorAPI {
             index = version.indexOf('-');
             version = version.substring(0, index);
         }
-        // 1.13.2, 1.14.4, etc...
+        // Trim any patch component, e.g. 1.13.2 -> 1.13, 26.1.2 -> 26.1
+        int firstDot = version.indexOf('.');
         int lastDot = version.lastIndexOf('.');
-        if (version.indexOf('.') != lastDot) version = version.substring(0, lastDot);
+        if (firstDot != lastDot) version = version.substring(0, lastDot);
 
-        return Integer.parseInt(version.substring(2));
+        int secondDot = version.indexOf('.');
+        String majorPart = version.substring(0, secondDot);
+        String minorPart = version.substring(secondDot + 1);
+
+        if ("1".equals(majorPart)) {
+            // Legacy "1.X" versioning, e.g. 1.8, 1.16, 1.21
+            return Integer.parseInt(minorPart);
+        }
+
+        // Year-based versioning (2026+), e.g. 26.1, 26.2, 27.1. Always postdates the RGB update.
+        return Integer.parseInt(majorPart) + 100;
     }
 
     /**
