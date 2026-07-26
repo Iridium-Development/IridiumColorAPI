@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.iridium"
-version = "1.0.9"
+version = "1.0.10"
 description = "IridiumColorAPI"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 

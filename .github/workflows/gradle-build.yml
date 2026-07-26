@@ -1,0 +1,32 @@
+# This workflow will build a Java project with Gradle
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+#
+# This worflow will also upload an artifact to Nexus, Hangar, Modrinth, and GitHub releases.
+
+name: Java CI with Gradle
+on: [ push ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.commits[0].message, '[ci-skip]')"
+    steps:
+      - uses: actions/checkout@v6
+      - uses: gradle/actions/wrapper-validation@v6
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+          cache: gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Test with Gradle
+        run: ./gradlew test
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: "IridiumColorAPI"
+          path: "build/libs/IridiumColorAPI-*.jar"
